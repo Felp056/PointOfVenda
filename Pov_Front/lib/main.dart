@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFEDF2F4)),
         useMaterial3: true,
       ),
-      home: loginpadrao(title: "P.O.V")
+      home: CadastroParticipante(title: "Participante")
       // CadastroParticipante(title: "Participante")
       //loginpadrao(title: "P.O.V"),
     );

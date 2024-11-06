@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pov_web/widgets/dropMenu.dart';
 
 class CadastroParticipante extends StatefulWidget {
-  const CadastroParticipante({super.key,  required this.title});
+  CadastroParticipante({super.key, required this.title});
+
   final String title;
+
   @override
   State<CadastroParticipante> createState() => _CadastroParticipante();
 }
@@ -12,11 +15,23 @@ class _CadastroParticipante extends State<CadastroParticipante> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cadastro de Participante', style: TextStyle(color: Colors.white, fontSize: 40),),
-        centerTitle: true,
+        title: Text(
+          'Cadastro de Participante',
+          style: TextStyle(color: Colors.white, fontSize: 40),
+        ),
+        centerTitle: false,
         backgroundColor: Colors.red,
       ),
       backgroundColor: Color(0xff8D99AE),
+      drawer: DropMenu(onMenuTap: (mainMenu, subMenu) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+            'Cliclou em $subMenu do menu $mainMenu',
+            textAlign: TextAlign.center,
+          )),
+        );
+      }),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -33,7 +48,8 @@ class _CadastroParticipante extends State<CadastroParticipante> {
                       color: Colors.black, // Cor da borda
                       width: 2.0, // Espessura da borda
                     ),
-                    borderRadius: BorderRadius.circular(30), // Arredondamento dos cantos da borda
+                    borderRadius: BorderRadius.circular(
+                        30), // Arredondamento dos cantos da borda
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,34 +62,36 @@ class _CadastroParticipante extends State<CadastroParticipante> {
                 SizedBox(height: 16),
                 // Containers expansíveis
                 Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xffEDF2F4), // Cor de fundo do container
-                    border: Border.all(
-                      color: Colors.black, // Cor da borda
-                      width: 2.0, // Espessura da borda
+                    decoration: BoxDecoration(
+                      color: Color(0xffEDF2F4), // Cor de fundo do container
+                      border: Border.all(
+                        color: Colors.black, // Cor da borda
+                        width: 2.0, // Espessura da borda
+                      ),
+                      borderRadius: BorderRadius.circular(
+                          30), // Arredondamento dos cantos da borda
                     ),
-                    borderRadius: BorderRadius.circular(30), // Arredondamento dos cantos da borda
-                  ),
-                  child: ClipRRect(
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: ExpansionTile(
-                      title: Text(
-                        'Luís do teste de Participante', //isso vai virar variavel
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      tilePadding: EdgeInsets.symmetric(horizontal: 16.0),
-                      backgroundColor: Color(0xffEDF2F4),
-                      collapsedBackgroundColor: Color(0xffEDF2F4),
-                      initiallyExpanded: false,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          child: CadastroFornecedorForm(isLargeScreen: constraints.maxWidth >= 600),
+                        title: Text(
+                          'Luís do teste de Participante',
+                          //isso vai virar variavel
+                          style: TextStyle(color: Colors.black),
                         ),
-                      ],
-                    ),
-                  )
-                )
+                        tilePadding: EdgeInsets.symmetric(horizontal: 16.0),
+                        backgroundColor: Color(0xffEDF2F4),
+                        collapsedBackgroundColor: Color(0xffEDF2F4),
+                        initiallyExpanded: false,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: CadastroFornecedorForm(
+                                isLargeScreen: constraints.maxWidth >= 600),
+                          ),
+                        ],
+                      ),
+                    ))
                 // Adicione mais ExpansionTiles aqui, se necessário
               ],
             ),
@@ -111,65 +129,69 @@ class _CadastroFormState extends State<CadastroForm> {
         children: [
           widget.isLargeScreen
               ? Row(
-            children: [
-              Expanded(child: buildTextField(nomeController, 'Nome')),
-              SizedBox(width: 16),
-              Expanded(child: buildTextField(emailController, 'Email')),
-            ],
-          )
+                  children: [
+                    Expanded(child: buildTextField(nomeController, 'Nome')),
+                    SizedBox(width: 16),
+                    Expanded(child: buildTextField(emailController, 'Email')),
+                  ],
+                )
               : buildTextField(nomeController, 'Nome'),
           SizedBox(height: 16),
           widget.isLargeScreen
               ? Row(
-            children: [
-              Expanded(child: buildTextField(documentoController, 'Documento')),
-              SizedBox(width: 16),
-              Expanded(child: buildTextField(celularController, 'Celular')),
-            ],
-          )
+                  children: [
+                    Expanded(
+                        child:
+                            buildTextField(documentoController, 'Documento')),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: buildTextField(celularController, 'Celular')),
+                  ],
+                )
               : buildTextField(documentoController, 'Documento'),
           SizedBox(height: 16),
           buildTextField(enderecoController, 'Endereço'),
           SizedBox(height: 16),
           widget.isLargeScreen
               ? Row(
-            children: [
-              Expanded(child: buildTextField(creditoController, 'Crédito')),
-              SizedBox(width: 16),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isFornecedor,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isFornecedor = value ?? false;
-                      });
-                    },
-                  ),
-                  Text('Fornecedor'),
-                ],
-              ),
-            ],
-          )
+                  children: [
+                    Expanded(
+                        child: buildTextField(creditoController, 'Crédito')),
+                    SizedBox(width: 16),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isFornecedor,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isFornecedor = value ?? false;
+                            });
+                          },
+                        ),
+                        Text('Fornecedor'),
+                      ],
+                    ),
+                  ],
+                )
               : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildTextField(creditoController, 'Crédito'),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isFornecedor,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isFornecedor = value ?? false;
-                      });
-                    },
-                  ),
-                  Text('Fornecedor'),
-                ],
-              ),
-            ],
-          ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildTextField(creditoController, 'Crédito'),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: isFornecedor,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isFornecedor = value ?? false;
+                            });
+                          },
+                        ),
+                        Text('Fornecedor'),
+                      ],
+                    ),
+                  ],
+                ),
           SizedBox(height: 16),
           Align(
             alignment: Alignment.centerRight,
@@ -177,7 +199,8 @@ class _CadastroFormState extends State<CadastroForm> {
               onPressed: () {
                 // Implementar lógica para salvar o formulário
               },
-              child: Text('Salvar', style:TextStyle( color: Colors.black, fontSize: 15)),
+              child: Text('Salvar',
+                  style: TextStyle(color: Colors.black, fontSize: 15)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffEC9A29),
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -211,22 +234,22 @@ class CadastroFornecedorForm extends StatelessWidget {
       children: [
         isLargeScreen
             ? Row(
-          children: [
-            Expanded(child: buildTextField('Nome do Fornecedor')),
-            SizedBox(width: 16),
-            Expanded(child: buildTextField('Documento')),
-          ],
-        )
+                children: [
+                  Expanded(child: buildTextField('Nome do Fornecedor')),
+                  SizedBox(width: 16),
+                  Expanded(child: buildTextField('Documento')),
+                ],
+              )
             : buildTextField('Nome do Fornecedor'),
         SizedBox(height: 16),
         isLargeScreen
             ? Row(
-          children: [
-            Expanded(child: buildTextField('Celular')),
-            SizedBox(width: 16),
-            Expanded(child: buildTextField('Email')),
-          ],
-        )
+                children: [
+                  Expanded(child: buildTextField('Celular')),
+                  SizedBox(width: 16),
+                  Expanded(child: buildTextField('Email')),
+                ],
+              )
             : buildTextField('Celular'),
         SizedBox(height: 16),
         buildTextField('Endereço'),
@@ -239,7 +262,8 @@ class CadastroFornecedorForm extends StatelessWidget {
             onPressed: () {
               // Implementar lógica para salvar o formulário
             },
-            child: Text('Salvar', style:TextStyle( color: Colors.black, fontSize: 15)),
+            child: Text('Salvar',
+                style: TextStyle(color: Colors.black, fontSize: 15)),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xffEC9A29),
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
