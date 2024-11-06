@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 import 'package:pov_web/pages/loginpadrao.dart';
 
 void main() {
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFEDF2F4)),
         useMaterial3: true,
       ),
-      home: loginpadrao(title: "P.O.V"),
+      home: loginpadrao(title: "P.O.V")
+      // CadastroParticipante(title: "Participante")
+      //loginpadrao(title: "P.O.V"),
     );
   }
 }
