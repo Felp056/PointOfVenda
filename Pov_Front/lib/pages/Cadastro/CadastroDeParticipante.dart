@@ -10,6 +10,7 @@ class CadastroParticipante extends StatefulWidget {
   State<CadastroParticipante> createState() => _CadastroParticipante();
 }
 
+
 class _CadastroParticipante extends State<CadastroParticipante> {
   @override
   Widget build(BuildContext context) {

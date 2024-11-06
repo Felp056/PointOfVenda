@@ -11,7 +11,6 @@ void main() {
   } else if (Platform.isAndroid) {
     runApp(const MyAppMobile());
   }
-  
 }
 
 class MyApp extends StatelessWidget {

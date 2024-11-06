@@ -13,7 +13,6 @@ class NewLogin{
       required this.NivelAcesso
   });
 
-
   factory NewLogin.FromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
