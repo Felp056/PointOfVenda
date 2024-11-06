@@ -48,11 +48,9 @@ public class UsuarioResController {
     }
 
     @PostMapping(path = "/atualizar")
-    public ResponseEntity atualizar(@RequestBody Usuario usuario, @RequestParam int id){
-        Usuario user = usuarioService.getUsuarioByID(id);
-        if(usuario == null){
-            return ResponseEntity.badRequest().build();
-        }else if(user.getId()  == usuario.getId()){
+    public ResponseEntity atualizar(@RequestBody Usuario usuario){
+        Usuario user = usuarioService.getUsuarioByID(usuario.getId());
+        if(user.getId()  == usuario.getId()){
             if(!usuario.getEmail().isEmpty() && !usuario.getEmail().isBlank()){
                 user.setEmail(usuario.getEmail());
             }
