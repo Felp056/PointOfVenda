@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
-import 'package:pov_web/pages/loginpadrao.dart';
+import 'package:pov_web/afterLogin.dart';
 import 'package:pov_web/mobile/loginMobile.dart';
 import 'dart:io' show Platform;
 
@@ -23,9 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFEDF2F4)),
         useMaterial3: true,
       ),
-      home: CadastroParticipante(title: "Participante")
-      // CadastroParticipante(title: "Participante")
-      //loginpadrao(title: "P.O.V"),
+      home: afterLogin(title: "P.O.V")
     );
   }
 }

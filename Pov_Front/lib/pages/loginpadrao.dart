@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:pov_web/afterLogin.dart';
 
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 
@@ -93,7 +94,7 @@ class _LoginPadraoState extends State<loginpadrao> {
                     if (response.body == "true") {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) =>
-                              CadastroParticipante(title: "Participante")),);
+                             afterLogin(title: "Principal")),);
                     } else {
                       _showDeniedMessage(context);
                     }
