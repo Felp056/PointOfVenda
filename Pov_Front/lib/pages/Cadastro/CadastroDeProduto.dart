@@ -96,13 +96,15 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
       final Uri url = Uri.parse(
           "http://localhost:8080/api/produto/atualizar?id=${produto['idProduto']}");
       final Map<String, dynamic> atualizadoProduto = {
+        "idProduto": produto["idProduto"],
         "Descricao": produto['Descricao'].text,
         "CodBarras": produto['CodBarras'].text,
         "QtdDisponivel": produto['QtdDisponivel'].text,
+        "Medida": ""
       };
 
       try {
-        final response = await http.put(
+        final response = await http.post(
           url,
           headers: {"Content-Type": "application/json"},
           body: json.encode(atualizadoProduto),
@@ -124,8 +126,7 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
   Future<void> _deletarProdutos() async {
     for (var produto in produtos.where((p) => p['isSelected'])) {
       final Uri url = Uri.parse(
-          "http://localhost:8080/api/produto/deletar?id=${produto['idProduto']}");
-
+          "http://localhost:8080/api/produto/delete?id=${produto['idProduto']}");
       try {
         final response = await http.delete(url);
 
