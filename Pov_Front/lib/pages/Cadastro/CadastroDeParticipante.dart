@@ -5,6 +5,7 @@ import 'package:pov_web/widgets/dropMenu.dart';
 import 'package:pov_web/DataModels/Pariticiapnte.dart';
 import '../../afterLogin.dart';
 import '../../widgets/CadastroForm.dart';
+import '../../widgets/DataForm.dart';
 
 class CadastroParticipante extends StatefulWidget {
   CadastroParticipante({super.key, required this.title});
@@ -119,12 +120,14 @@ class _CadastroParticipanteState extends State<CadastroParticipante> {
                                 children: [
                                   Container(
                                     padding: EdgeInsets.all(16.0),
-                                    child: Text(
-                                      "Email: ${participante.Email}\n"
-                                      "Documento: ${participante.Documento}\n"
-                                      "Celular: ${participante.NumContato}\n"
-                                      "Endereço: ${participante.Endereco}",
-                                      style: TextStyle(fontSize: 16),
+                                    child: Dataform(
+                                        isLargeScreen: constraints.maxWidth >= 600,
+                                        Nomedata: participante.Nome,
+                                        Emaildata: participante.Email,
+                                        Documentodata: participante.Documento,
+                                        Enderecodata: participante.Endereco,
+                                        Celuladata: participante.NumContato,
+                                        Fornecedor: participante.Fornecedor,
                                     ),
                                   ),
                                 ],
