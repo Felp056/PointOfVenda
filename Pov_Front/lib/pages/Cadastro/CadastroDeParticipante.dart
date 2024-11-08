@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pov_web/pages/Cadastro/CadastroDeProduto.dart';
 import 'package:pov_web/widgets/dropMenu.dart';
-import 'package:pov_web/DataModels/Pariticiapnte.dart';
+import 'package:pov_web/DataModels/Pariticipante.dart';
 import '../../afterLogin.dart';
 import '../../widgets/CadastroForm.dart';
 import '../../widgets/DataForm.dart';
@@ -60,15 +61,19 @@ class _CadastroParticipanteState extends State<CadastroParticipante> {
       ),
       backgroundColor: Color(0xff8D99AE),
       drawer: DropMenu(onMenuTap: (mainMenu, subMenu) {
+        Widget targetPage;
+        switch (subMenu) {
+          case "Participante":
+            targetPage = CadastroParticipante(title: "Cadastro de Participante");
+            break;
+          case "Produto":
+            targetPage = Cadastrodeproduto(title: "Cadastro de Produto");
+          default:
+            targetPage = afterLogin(title: "P.O.V");
+            break;
+        }
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) {
-            switch (subMenu) {
-              case "Participante":
-                return CadastroParticipante(title: "Cadastro de Participante");
-              default:
-                return afterLogin(title: "P.O.V");
-            }
-          }),
+          MaterialPageRoute(builder: (context) => targetPage),
         );
       }),
       body: LayoutBuilder(
@@ -128,6 +133,7 @@ class _CadastroParticipanteState extends State<CadastroParticipante> {
                                         Enderecodata: participante.Endereco,
                                         Celuladata: participante.NumContato,
                                         Fornecedor: participante.Fornecedor,
+                                        id :participante.id
                                     ),
                                   ),
                                 ],

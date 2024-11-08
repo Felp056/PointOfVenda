@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 import 'package:pov_web/widgets/dropMenu.dart';
 
+import 'pages/Cadastro/CadastroDeProduto.dart';
+
 class afterLogin extends StatefulWidget {
   afterLogin({super.key, required this.title});
 
@@ -30,10 +32,8 @@ class _afterLogin extends State<afterLogin> {
           case "Participante":
             targetPage = CadastroParticipante(title: "Cadastro de Participante");
             break;
-         /* case "Produto":
-            targetPage = ProdutoPage();
-            break;*/
-        // Adicione mais cases para os outros submenus
+          case "Produto":
+            targetPage = Cadastrodeproduto(title: "Cadastro de Produto");
           default:
             targetPage = afterLogin(title: "P.O.V");
             break;
