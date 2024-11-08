@@ -54,6 +54,9 @@ public class ProdutoRestController {
             if(produto.getQtdDisponivel() > 0){
                 prod.setQtdDisponivel(produto.getQtdDisponivel());
             }
+            if(produto.getPrecos() != null){
+                prod.setPrecos(produto.getPrecos());
+            }
             produtoService.save(prod);
         }else {
             return ResponseEntity.notFound().build();

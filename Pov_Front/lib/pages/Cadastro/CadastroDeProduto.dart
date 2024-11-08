@@ -100,7 +100,8 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
         "Descricao": produto['Descricao'].text,
         "CodBarras": produto['CodBarras'].text,
         "QtdDisponivel": produto['QtdDisponivel'].text,
-        "Medida": ""
+        "Medida": "",
+        "precos" : null
       };
 
       try {

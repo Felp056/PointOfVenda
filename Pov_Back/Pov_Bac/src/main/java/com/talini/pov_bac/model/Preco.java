@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -17,10 +19,14 @@ public class Preco {
     private long CodTabela;
     @JsonProperty("NomeTabela")
     private String NomeTabela;
-    @ManyToOne
-    @JoinColumn(name = "id_produto_id_produto")
+    @ManyToMany
+    @JoinTable(
+            name = "id_produto",
+            joinColumns = @JoinColumn(name = "preco_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
+    )
     @JsonProperty("produto")
-    private Produto produto;
+    private List<Produto> produto;
     @JsonProperty("Preco")
     private double Preco;
     @JsonProperty("Promocao")

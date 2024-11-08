@@ -51,6 +51,9 @@ public class PrecoRestController {
             if(!preco.getNomeTabela().isEmpty() && !preco.getNomeTabela().isEmpty()) {
                 pre.setNomeTabela(preco.getNomeTabela());
             }
+            if(preco.getProduto() != null){
+                pre.setProduto(preco.getProduto());
+            }
             precoService.save(pre);
         }else {
             return ResponseEntity.notFound().build();
