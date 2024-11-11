@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:pov_web/Repository/UserRepository.dart';
+
+/*
+TODO:  
+  - Arrumar alinhamento nos campos de email e senha
+  - Corrigir cor da fonte no botão Entrar
+*/
 
 class loginBoxMobile extends StatelessWidget {
   const loginBoxMobile({
     super.key,
-    required this.userControler,
+    required this.emailController,
+    required this.senhaController,
+    required this.repository,
   });
 
-  final TextEditingController userControler;
+  final TextEditingController emailController;
+  final TextEditingController senhaController;
+  final UserRepository repository;
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +38,72 @@ class loginBoxMobile extends StatelessWidget {
         ),
         child: Column(
           children: [
-            TextField(
-                controller: userControler,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(2))),
-                    hintText: 'Usuário:',
-                    hintStyle:
-                        TextStyle(color: Color.fromRGBO(188, 188, 188, 1)),
-                    filled: true,
-                    fillColor: Colors.white)),
+            SizedBox(
+                width: 275,
+                height: 36,
+                child: TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(2))),
+                        hintText: 'Email:',
+                        hintStyle:
+                            TextStyle(color: Color.fromRGBO(188, 188, 188, 1)),
+                        filled: true,
+                        fillColor: Colors.white))),
             const SizedBox(height: 10),
-            TextField(
-                controller: userControler,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(2))),
-                    hintText: 'Senha:',
-                    hintStyle:
-                        TextStyle(color: Color.fromRGBO(188, 188, 188, 1)),
-                    filled: true,
-                    fillColor: Colors.white)),
+            SizedBox(
+              width: 275,
+              height: 36,
+              child: TextField(
+                  controller: senhaController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(2))),
+                      hintText: 'Senha:',
+                      hintStyle:
+                          TextStyle(color: Color.fromRGBO(188, 188, 188, 1)),
+                      filled: true,
+                      fillColor: Colors.white)),
+            ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => {print('Entrar')},
-              child: Text('Entrar'),
+            SizedBox(
+              width: 275,
+              height: 36,
+              child: ElevatedButton(
+                onPressed: () => entrar(
+                  emailController.text,
+                  senhaController.text,
+                  context,
+                ),
+                style: ElevatedButton.styleFrom(
+                    shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    backgroundColor: const Color.fromRGBO(236, 154, 41, 1),
+                    textStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1))),
+                child: const Text('Entrar'),
+              ),
             )
           ],
         ),
       ),
     );
+  }
+
+  entrar(
+    String email,
+    String senha,
+    BuildContext context,
+  ) async {
+    var login = await repository.doLogin(email, senha);
+
+    if (login) {
+      Navigator.pushNamed(
+        context,
+        '/homepage',
+      );
+    }
   }
 }
