@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 import '../../afterLogin.dart';
 import '../../widgets/dropMenu.dart';
+import 'CadastroDeTabelaDePreco.dart';
 
 class Cadastrodeproduto extends StatefulWidget {
   Cadastrodeproduto({super.key, required this.title});
@@ -101,6 +102,7 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
         "CodBarras": produto['CodBarras'].text,
         "QtdDisponivel": produto['QtdDisponivel'].text,
         "Medida": "",
+        "Preco": 0,
         "precos" : null
       };
 
@@ -168,6 +170,9 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
             break;
           case "Produto":
             targetPage = Cadastrodeproduto(title: "Cadastro de Produto");
+            break;
+          case "Tabela de Preço":
+            targetPage = Cadastrodetabeladepreco(title: "Cadastro de Tabela de Preço");
             break;
           default:
             targetPage = afterLogin(title: "P.O.V");

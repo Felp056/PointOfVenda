@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
+import 'package:pov_web/pages/Cadastro/CadastroDeTabelaDePreco.dart';
 import 'package:pov_web/widgets/dropMenu.dart';
 
 import 'pages/Cadastro/CadastroDeProduto.dart';
@@ -34,6 +35,9 @@ class _afterLogin extends State<afterLogin> {
             break;
           case "Produto":
             targetPage = Cadastrodeproduto(title: "Cadastro de Produto");
+          case "Tabela de Preço":
+            targetPage = Cadastrodetabeladepreco(title: "Cadastro de Tabela de Preço");
+            break;
           default:
             targetPage = afterLogin(title: "P.O.V");
             break;

@@ -133,7 +133,6 @@ class _DataformState extends State<Dataform> {
     );
   }
 
-  // Método para salvar os dados
   Future<void> _saveData() async {
     final Uri url = Uri.parse("http://localhost:8080/api/participante/atualizar?id=${id}");
     final Map<String, String> headers = {

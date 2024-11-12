@@ -42,17 +42,15 @@ public class PrecoRestController {
         if(preco == null){
             return ResponseEntity.badRequest().build();
         }else if(pre.getCodTabela() == preco.getCodTabela()){
-            if(preco.getPreco() != 0) {
-                pre.setPreco(preco.getPreco());
-            }if(preco.getProduto() != null){
-                pre.setProduto(preco.getProduto());
-            }
             pre.setPromocao(preco.isPromocao());
+            if(preco.getProdutos() != null){
+                pre.setProdutos(preco.getProdutos());
+            }
             if(!preco.getNomeTabela().isEmpty() && !preco.getNomeTabela().isEmpty()) {
                 pre.setNomeTabela(preco.getNomeTabela());
             }
-            if(preco.getProduto() != null){
-                pre.setProduto(preco.getProduto());
+            if(preco.getCodTabela() >= 0){
+                pre.setCodTabela(preco.getCodTabela());
             }
             precoService.save(pre);
         }else {

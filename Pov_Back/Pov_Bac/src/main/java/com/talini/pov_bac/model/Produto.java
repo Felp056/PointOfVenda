@@ -1,11 +1,12 @@
 package com.talini.pov_bac.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,22 +17,24 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("idProduto")
     private int idProduto;
+
     @JsonProperty("Descricao")
-    private String Descricao;
+    private String descricao;
+
     @JsonProperty("CodBarras")
-    private long CodBarras;
+    private long codBarras;
+
     @JsonProperty("QtdDisponivel")
-    private long QtdDisponivel;
+    private long qtdDisponivel;
+
     @JsonProperty("Medida")
-    private String Medida;
-    @ManyToMany(mappedBy = "produto")
-    private Collection<Preco> precos;
+    private String medida;
 
-    public Collection<Preco> getPrecos() {
-        return precos;
-    }
+    @JsonProperty("Preco")
+    private double preco;
 
-    public void setPrecos(Collection<Preco> precos) {
-        this.precos = precos;
-    }
+    // Configurando o relacionamento muitos-para-muitos com Tabela de Preços
+    @ManyToMany(mappedBy = "produtos")
+    @JsonBackReference  // Evita referência circular na serialização JSON
+    private Set<Preco> precos;
 }
