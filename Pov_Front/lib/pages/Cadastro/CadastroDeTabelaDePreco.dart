@@ -1,6 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pov_web/afterLogin.dart';
+import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
+import 'package:pov_web/pages/Cadastro/CadastroDeProduto.dart';
+import 'package:pov_web/widgets/ProdFormDataToGrid.dart';
+import 'package:pov_web/widgets/dropMenu.dart';
 
 class Cadastrodetabeladepreco extends StatefulWidget {
   Cadastrodetabeladepreco({super.key, required this.title});
@@ -18,6 +23,10 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
   List<Map<String, dynamic>> tabelasDePreco = []; // Lista para armazenar as tabelas de preço
   List<Map<String, dynamic>> todosProdutos = []; // Lista para todos os produtos para dropdown
   List<Map<String, dynamic>> produtosSelecionados = []; // Lista de produtos da tabela selecionada
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // Carrega a lista de todos os produtos para o dropdown
   Future<void> _carregarTodosProdutos() async {
@@ -228,6 +237,25 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
         ),
         backgroundColor: Colors.red,
       ),
+      drawer: DropMenu(onMenuTap: (mainMenu, subMenu) {
+      Widget targetPage;
+      switch (subMenu) {
+        case "Participante":
+          targetPage = CadastroParticipante(title: "Cadastro de Participante");
+          break;
+        case "Produto":
+          targetPage = Cadastrodeproduto(title: "Cadastro de Produto");
+        case "Tabela de Preço":
+          targetPage = Cadastrodetabeladepreco(title: "Cadastro de Tabela de Preço");
+          break;
+        default:
+          targetPage = afterLogin(title: "P.O.V");
+          break;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => targetPage),
+      );
+    }),
       backgroundColor: Color(0xff8D99AE),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -317,7 +345,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                           columnSpacing: MediaQuery.of(context).size.width * 0.05,
                           headingRowHeight: 56,
                           columns: [
-                            
+
                             DataColumn(label: Text("Nome", style: TextStyle(fontSize: fontSize))),
                             DataColumn(label: Text("Código de Barras", style: TextStyle(fontSize: fontSize))),
                             DataColumn(label: Text("Qtd Disponível", style: TextStyle(fontSize: fontSize))),
@@ -350,6 +378,8 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                                   )
                                       : Text(produto["Descricao"] ?? ""),
                                 ),
+                                //DataCell(Prodformdatatogrid(nome: produto["Descricao"], codBarras: produto["CodBarras"], qtdDisponivel: produto["QtdDisponivel"], medida: produto["Medida"], preco: produto["Preco"], promocao: produto["Promocao"], id: produto["idProduto"], onRemove: _removerProduto(index))),
+
                                 DataCell(Text(produto["CodBarras"].toString())),
                                 DataCell(Text(produto["QtdDisponivel"].toString())),
                                 DataCell(Text(produto["Medida"])),
