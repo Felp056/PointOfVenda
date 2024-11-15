@@ -139,10 +139,10 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
       precos.add({
         "idProduto": null,
         "Descricao": null,
-        "CodBarras": "",
+        "CodBarras": 0,
         "QtdDisponivel": 0,
         "Medida": "",
-        "Preco": 0.0,
+        "Preco": 0,
         "Promocao": false,
       });
     });
@@ -303,19 +303,19 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
                 ),
-                child: SingleChildScrollView(
+                child: Expanded(child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
-                    columnSpacing: MediaQuery.of(context).size.width * 0.05,
+                    columnSpacing: MediaQuery.of(context).size.width * 0.095,
                     headingRowHeight: 56,
                     columns: [
-                      DataColumn(label: Text("Nome", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Código de Barras", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Qtd Disponível", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Medida", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Preço", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Promoção", style: TextStyle(fontSize: fontSize))),
-                      DataColumn(label: Text("Ações", style: TextStyle(fontSize: fontSize))),
+                      DataColumn(label: Expanded(child: Text("Nome", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Código de Barras", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Qtd Disponível", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Medida", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Preço", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Promoção", style: TextStyle(fontSize: fontSize)))),
+                      DataColumn(label: Expanded(child: Text("Ações", style: TextStyle(fontSize: fontSize)))),
                     ],
                     rows: precos.asMap().entries.map((entry) {
                       int index = entry.key;
@@ -336,6 +336,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                     }).toList(),
                   ),
                 ),
+              ),
               ),
             ),
           ],

@@ -6,7 +6,7 @@ class Prodformdatatogrid extends StatefulWidget {
   final int qtdDisponivel;
   final String medida;
   final int preco;
-  final bool promocao;
+  bool promocao;
   final int id;
   final VoidCallback onRemove; // Callback para remover o widget
 
@@ -18,26 +18,31 @@ class Prodformdatatogrid extends StatefulWidget {
     required this.preco,
     required this.promocao,
     required this.id,
-    required this.onRemove, // Recebe o callback para remover
+    required this.onRemove,
   });
 
   @override
   _ProdformdatatogridState createState() => _ProdformdatatogridState();
 
-  // Método auxiliar que converte para DataRow
+  TextEditingController nomeController = TextEditingController();
+  TextEditingController codBarrasController = TextEditingController();
+  TextEditingController qtdDisponivelController= TextEditingController();
+  TextEditingController medidaController= TextEditingController();
+  TextEditingController precoController= TextEditingController();
+
   DataRow toDataRow() {
     return DataRow(
       cells: [
-        DataCell(Text(nome.isNotEmpty ? nome : '-')),
-        DataCell(Text(codBarras > 0 ? codBarras.toString() : '-')),
-        DataCell(Text(qtdDisponivel > 0 ? qtdDisponivel.toString() : '-')),
-        DataCell(Text(medida.isNotEmpty ? medida : '-')),
-        DataCell(Text(preco > 0 ? preco.toString() : '-')),
+        DataCell(Expanded(child: buildOptionalTextField(nomeController, nome ?? nome)),),
+        DataCell( Expanded(child: buildOptionalTextField(codBarrasController, codBarras.toString() ?? codBarras.toString(), isNumeric: true))),
+        DataCell( Expanded(child: buildOptionalTextField(qtdDisponivelController, qtdDisponivel.toString() ?? qtdDisponivel.toString(), isNumeric: true))),
+        DataCell(Expanded(child: buildOptionalTextField(medidaController, medida ?? medida))),
+        DataCell( Expanded(child: buildOptionalTextField(precoController, preco.toString() ?? preco.toString(), isNumeric: true))),
         DataCell(
           Checkbox(
             value: promocao,
             onChanged: (value) {
-              // Lógica para atualização do valor da promoção
+              promocao = value ?? false;
             },
           ),
         ),
@@ -51,13 +56,24 @@ class Prodformdatatogrid extends StatefulWidget {
     );
   }
 }
+Widget buildOptionalTextField(TextEditingController controller, String label, {bool isNumeric = false}) {
+  return TextField(
+    controller: controller,
+    keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+    decoration: InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(),
+      hintText: 'Opcional', // Sugestão de texto para campo vazio
+    ),
+  );
+}
 
 class _ProdformdatatogridState extends State<Prodformdatatogrid> {
-  late TextEditingController nomeController;
-  late TextEditingController codBarrasController;
-  late TextEditingController qtdDisponivelController;
-  late TextEditingController medidaController;
-  late TextEditingController precoController;
+  late TextEditingController nomeController = TextEditingController();
+  late TextEditingController codBarrasController = TextEditingController();
+  late TextEditingController qtdDisponivelController= TextEditingController();
+  late TextEditingController medidaController= TextEditingController();
+  late TextEditingController precoController= TextEditingController();
   late bool promocaoValue;
 
   @override
