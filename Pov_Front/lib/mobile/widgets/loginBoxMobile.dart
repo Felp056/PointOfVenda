@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/Repository/UserRepository.dart';
+import 'package:pov_web/mobile/widgets/button_mobile.dart';
 
 /*
 TODO:  
@@ -67,25 +68,11 @@ class loginBoxMobile extends StatelessWidget {
                       fillColor: Colors.white)),
             ),
             const SizedBox(height: 10),
-            SizedBox(
-              width: 275,
-              height: 36,
-              child: ElevatedButton(
-                onPressed: () => entrar(
-                  emailController.text,
-                  senhaController.text,
-                  context,
-                ),
-                style: ElevatedButton.styleFrom(
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                    backgroundColor: const Color.fromRGBO(236, 154, 41, 1),
-                    textStyle: const TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1))),
-                child: const Text('Entrar'),
-              ),
-            )
+            mobileButton(
+                buttonName: "Entrar",
+                buttonFunction: () => entrar,
+                buttonWidth: 275,
+                buttonHeight: 36)
           ],
         ),
       ),
