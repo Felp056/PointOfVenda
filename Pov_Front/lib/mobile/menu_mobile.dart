@@ -24,6 +24,13 @@ class _MenuMobileState extends State<MenuMobile> {
             children: [
               const SizedBox(height: 10),
               mobileButton(
+                buttonName: "Nova venda",
+                buttonFunction: novaVenda,
+                buttonWidth: 275,
+                buttonHeight: 36,
+              ),
+              const SizedBox(height: 10),
+              mobileButton(
                 buttonName: "Enviar Pedidos",
                 buttonFunction: transmitirPedidos,
                 buttonWidth: 275,
@@ -47,5 +54,12 @@ class _MenuMobileState extends State<MenuMobile> {
 
   void receberCarga() {
     print("Deu sim.");
+  }
+
+  novaVenda() {
+    Navigator.pushNamed(
+      context,
+      '/vendas',
+    );
   }
 }
