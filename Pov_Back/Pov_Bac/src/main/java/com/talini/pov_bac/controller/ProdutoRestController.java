@@ -57,9 +57,6 @@ public class ProdutoRestController {
             if(produto.getPreco() >= 0){
                 prod.setPreco(produto.getPreco());
             }
-            if (produto.getPrecos() != null) {
-                prod.setPrecos(produto.getPrecos());
-            }
             produtoService.save(prod);
         }else {
             return ResponseEntity.notFound().build();

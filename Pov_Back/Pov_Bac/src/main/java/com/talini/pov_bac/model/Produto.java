@@ -1,12 +1,9 @@
 package com.talini.pov_bac.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -32,9 +29,4 @@ public class Produto {
 
     @JsonProperty("Preco")
     private double preco;
-
-    // Configurando o relacionamento muitos-para-muitos com Tabela de Preços
-    @ManyToMany(mappedBy = "produtos")
-    @JsonBackReference  // Evita referência circular na serialização JSON
-    private Set<Preco> precos;
 }
