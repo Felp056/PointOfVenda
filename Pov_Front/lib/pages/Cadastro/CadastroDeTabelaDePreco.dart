@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pov_web/afterLogin.dart';
@@ -157,16 +158,10 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
 
   // Salva as alterações feitas na tabela de preço selecionada
   Future<void> _salvarAlteracoesTabelaDePreco() async {
-    if (selectedCodigoTabela == null) {
-      print("Nenhuma tabela de preço selecionada para salvar.");
-      return;
-    }
-
-    final Uri url = Uri.parse("http://localhost:8080/api/tabelasPreco/salvar");
-
-    final tabelaPrecoData = {
-      "codigoTabela": selectedCodigoTabela,
-      "nomeTabela": nomeController.text,
+      final tabelaPrecoData = {
+      "CodTabela": selectedCodigoTabela ?? codigoTabelaController.text,
+      "NomeTabela": nomeController.text,
+      "Promocao": false,
       "produtos": precos.map((produto) => {
         "idProduto": produto["idProduto"],
         "Descricao": produto["Descricao"],
@@ -174,15 +169,26 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
         "QtdDisponivel": produto["QtdDisponivel"],
         "Medida": produto["Medida"],
         "Preco": produto["Preco"],
-        "Promocao": produto["Promocao"]
       }).toList(),
     };
 
+      final dio = Dio();
     try {
-      final response = await http.post(
+      final Uri url =  selectedCodigoTabela == null ? Uri.parse("http://localhost:8080/api/preco/adicionar") : Uri.parse("http://localhost:8080/api/preco/atualizar?id="+selectedCodigoTabela.toString());
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      dio.interceptors.add(LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: true,
+      ));
+      final response = await dio.postUri(
         url,
-        headers: {"Content-Type": "application/json"},
-        body: json.encode(tabelaPrecoData),
+        options: Options( contentType: 'application/json'),
+        data: json.encode(tabelaPrecoData),
       );
 
       if (response.statusCode == 201) {

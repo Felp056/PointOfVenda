@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/mobile/widgets/mobileAppBar.dart';
-import 'package:pov_web/mobile/widgets/button_mobile.dart';
 
 class MenuMobile extends StatefulWidget {
   const MenuMobile({
@@ -15,10 +14,9 @@ class _MenuMobileState extends State<MenuMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MobileAppBar(
-        pageTitle: "Configurações",
-      ),
-      body: Container(
+      appBar: MobileAppBar(),
+      body: Center(
+        child: Container(
           alignment: Alignment.center,
           child: Column(
             children: [

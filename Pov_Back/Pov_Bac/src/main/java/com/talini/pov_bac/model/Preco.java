@@ -1,7 +1,6 @@
 package com.talini.pov_bac.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,13 +26,13 @@ public class Preco {
     @JsonProperty("Promocao")
     private boolean promocao;
 
-    // Configurando o relacionamento muitos-para-muitos com Produtos
+    // Relação Many-to-Many com Produto (somente produtos existentes)
     @ManyToMany
     @JoinTable(
-            name = "produto_preco", // Nome da tabela intermediária
-            joinColumns = @JoinColumn(name = "preco_id"), // Coluna de Preco na tabela intermediária
-            inverseJoinColumns = @JoinColumn(name = "produto_id") // Coluna de Produto na tabela intermediária
+            name = "produto_preco",
+            joinColumns = @JoinColumn(name = "preco_id"),
+            inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    @JsonManagedReference  // Gerencia referência circular no JSON
+    @JsonProperty("Produtos") // Nome esperado no JSON
     private Set<Produto> produtos;
 }
