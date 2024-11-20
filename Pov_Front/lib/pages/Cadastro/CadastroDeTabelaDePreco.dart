@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pov_web/afterLogin.dart';
@@ -157,16 +158,10 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
 
   // Salva as alterações feitas na tabela de preço selecionada
   Future<void> _salvarAlteracoesTabelaDePreco() async {
-    if (selectedCodigoTabela == null) {
-      print("Nenhuma tabela de preço selecionada para salvar.");
-      return;
-    }
-
-    final Uri url = Uri.parse("http://localhost:8080/api/tabelasPreco/salvar");
-
     final tabelaPrecoData = {
-      "codigoTabela": selectedCodigoTabela,
-      "nomeTabela": nomeController.text,
+      "CodTabela": selectedCodigoTabela,
+      "NomeTabela": nomeController.text,
+      "Promocao": false,
       "produtos": precos.map((produto) => {
         "idProduto": produto["idProduto"],
         "Descricao": produto["Descricao"],
@@ -174,21 +169,25 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
         "QtdDisponivel": produto["QtdDisponivel"],
         "Medida": produto["Medida"],
         "Preco": produto["Preco"],
-        "Promocao": produto["Promocao"]
+        "precos": null
       }).toList(),
     };
 
     try {
+      final Uri url =  selectedCodigoTabela == null ? Uri.parse("http://localhost:8080/api/preco/adicionar") : Uri.parse("http://localhost:8080/api/preco/atualizar?id="+selectedCodigoTabela.toString());
+      const headers = {
+        'Content-Type': 'application/json',
+      };
       final response = await http.post(
         url,
-        headers: {"Content-Type": "application/json"},
+        headers: headers,
         body: json.encode(tabelaPrecoData),
+         // options: Options(contentType: "application/Json"),
       );
-
-      if (response.statusCode == 201) {
+     if (response.statusCode == 200) {
         print("Tabela de preço e produtos salvos com sucesso!");
       } else {
-        print("Erro ao salvar a tabela de preço: ${response.statusCode}");
+        print("Erro ao salvar a tabela de preço: ${response.statusCode} + ${response.body}");
       }
     } catch (e) {
       print("Erro na requisição de salvamento: $e");
