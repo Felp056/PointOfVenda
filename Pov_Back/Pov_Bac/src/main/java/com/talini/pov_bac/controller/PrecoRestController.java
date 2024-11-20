@@ -2,7 +2,6 @@ package com.talini.pov_bac.controller;
 
 import com.talini.pov_bac.model.Preco;
 import com.talini.pov_bac.service.PrecoService;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +29,14 @@ public class PrecoRestController {
         return ResponseEntity.ok("Preco deletado");
     }
 
-    @PostMapping(path = "/adicionar", consumes = {MediaType.APPLICATION_JSON_VALUE, "application/json;charset=utf-8"})
+    @PostMapping(path = "/adicionar")
     public ResponseEntity add(@RequestBody Preco preco)
     {
         precoService.save(preco);
         return ResponseEntity.ok("Preco salvo com sucesso");
     }
 
-    @PostMapping(path = "/atualizar", consumes = {MediaType.APPLICATION_JSON_VALUE, "application/json;charset=utf-8"})
+    @PostMapping(path = "/atualizar")
     public ResponseEntity atualizar(@RequestBody Preco preco, @RequestParam int id){
         Preco pre = precoService.getPrecoById(id);
         if(preco == null){
