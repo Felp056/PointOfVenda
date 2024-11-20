@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
+  MobileAppBar({
+    super.key,
+    required this.pageTitle,
+  });
+
   final Color appBarColor = Color.fromRGBO(217, 4, 39, 1);
-  final pageTitle = 'Point of Venda';
+  String pageTitle;
 
   @override
   Size get preferredSize => Size.fromHeight(60.0);
