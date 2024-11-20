@@ -28,7 +28,13 @@ class mobileButton extends StatelessWidget {
             backgroundColor: const Color.fromRGBO(236, 154, 41, 1),
             textStyle:
                 const TextStyle(color: Color.fromRGBO(255, 255, 255, 1))),
-        child: Text(buttonName),
+        child: Text(
+          buttonName,
+          style: const TextStyle(
+            color: Color.fromRGBO(255, 255, 255, 1),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
