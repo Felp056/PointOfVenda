@@ -3,7 +3,9 @@ import 'package:pov_web/DataModels/Produto.dart';
 import 'package:pov_web/Repository/ProdutoRepository.dart';
 
 class WidgetItensVenda extends StatefulWidget {
-  ProdutoRepository produtoRepository = ProdutoRepository();
+  WidgetItensVenda({
+    super.key,
+  });
 
   @override
   State<WidgetItensVenda> createState() => _WidgetItensVendaState();
@@ -11,7 +13,9 @@ class WidgetItensVenda extends StatefulWidget {
 
 class _WidgetItensVendaState extends State<WidgetItensVenda> {
   ProdutoRepository produtoRepository = ProdutoRepository();
-  List<Produto> produtos = [];
+  List<DropdownMenuItem<Produto>> produtos = [];
+  Produto? prodSelecionado;
+  dynamic result;
 
   @override
   void initState() {
@@ -20,24 +24,42 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
   }
 
   Future<void> _getAllProdutos() async {
-    final result = await produtoRepository.getAllProdutos();
+    result = await produtoRepository.getAllProdutos();
     setState(() {
-      produtos = result;
+      produtos = List.generate(
+        result.length,
+        (index) => DropdownMenuItem(
+          value: result[index],
+          child: Text(result.elementAt(index).Descricao),),);
+      prodSelecionado = result[0];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: produtos.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.add_shopping_cart),
-            title: Text(produtos.elementAt(index).idProduto.toString() +
-                " - " +
-                produtos.elementAt(index).Descricao),
-            subtitle: Text(produtos.elementAt(index).CodBarras.toString()),
-          );
-        });
+    return  SizedBox(
+      height: 68,
+      width: 300,
+      child: Row(
+        children: [
+          Column(
+            children: [
+              DropdownButton(
+                items: produtos, 
+                value: prodSelecionado,
+                onChanged: (value) {
+                  setState(() {
+                    prodSelecionado = value!;
+                  });
+                },
+              ),
+              Text(prodSelecionado!.QtdDisponivel.toString()),
+            ],
+          ),
+          Column(
+            children: [],
+          ),
+        ],)
+    );
   }
 }
