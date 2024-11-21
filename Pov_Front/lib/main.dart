@@ -5,6 +5,7 @@ import 'package:pov_web/mobile/login_mobile.dart';
 import 'dart:io' show Platform;
 
 import 'package:pov_web/mobile/menu_mobile.dart';
+import 'package:pov_web/mobile/venda_mobile.dart';
 
 void main() {
   if (kIsWeb) {
@@ -42,6 +43,7 @@ class MyAppMobile extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/loginpage': (BuildContext context) => new LoginMobile(),
         '/homepage': (BuildContext context) => new MenuMobile(),
+        '/vendas': (BuildContext context) => new VendaMobile(),
       },
     );
   }

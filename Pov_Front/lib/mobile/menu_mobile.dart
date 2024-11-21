@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/mobile/widgets/mobileAppBar.dart';
+import 'package:pov_web/mobile/widgets/button_mobile.dart';
 
 class MenuMobile extends StatefulWidget {
   const MenuMobile({
@@ -13,13 +14,22 @@ class MenuMobile extends StatefulWidget {
 class _MenuMobileState extends State<MenuMobile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(/*
-      appBar: MobileAppBar(),
+    return Scaffold(
+      appBar: MobileAppBar(
+        pageTitle: "Menu",
+      ),
       body: Center(
         child: Container(
           alignment: Alignment.center,
           child: Column(
             children: [
+              const SizedBox(height: 10),
+              mobileButton(
+                buttonName: "Nova venda",
+                buttonFunction: novaVenda,
+                buttonWidth: 275,
+                buttonHeight: 36,
+              ),
               const SizedBox(height: 10),
               mobileButton(
                 buttonName: "Enviar Pedidos",
@@ -35,8 +45,10 @@ class _MenuMobileState extends State<MenuMobile> {
                 buttonHeight: 36,
               )
             ],
-          )),
-    */);
+          ),
+        ),
+      ),
+    );
   }
 
   void transmitirPedidos() {
@@ -45,5 +57,12 @@ class _MenuMobileState extends State<MenuMobile> {
 
   void receberCarga() {
     print("Deu sim.");
+  }
+
+  novaVenda() {
+    Navigator.pushNamed(
+      context,
+      '/vendas',
+    );
   }
 }

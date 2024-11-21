@@ -20,7 +20,9 @@ class _LoginMobileState extends State<LoginMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MobileAppBar(),
+        appBar: MobileAppBar(
+          pageTitle: "Point of Venda",
+        ),
         body: loginBoxMobile(
           emailController: emailControler,
           senhaController: senhaControler,

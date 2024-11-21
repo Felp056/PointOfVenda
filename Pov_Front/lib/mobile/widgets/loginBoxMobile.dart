@@ -4,7 +4,6 @@ import 'package:pov_web/mobile/widgets/button_mobile.dart';
 
 /*
 TODO:  
-  - Arrumar alinhamento nos campos de email e senha
   - Corrigir cor da fonte no botão Entrar
 */
 
@@ -25,7 +24,7 @@ class loginBoxMobile extends StatelessWidget {
     return Center(
       child: Container(
         alignment: Alignment.center,
-        height: 278,
+        height: 201,
         width: 320,
         padding: const EdgeInsets.all(35.5),
         decoration: const BoxDecoration(
@@ -43,6 +42,9 @@ class loginBoxMobile extends StatelessWidget {
                 width: 275,
                 height: 36,
                 child: TextField(
+                    textAlignVertical: TextAlignVertical.bottom,
+                    textAlign: TextAlign.left,
+                    keyboardType: TextInputType.emailAddress,
                     controller: emailController,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(
@@ -57,6 +59,10 @@ class loginBoxMobile extends StatelessWidget {
               width: 275,
               height: 36,
               child: TextField(
+                  textAlignVertical: TextAlignVertical.bottom,
+                  textAlign: TextAlign.left,
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
                   controller: senhaController,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(
@@ -70,7 +76,8 @@ class loginBoxMobile extends StatelessWidget {
             const SizedBox(height: 10),
             mobileButton(
                 buttonName: "Entrar",
-                buttonFunction: () => entrar,
+                buttonFunction: () =>
+                    entrar(emailController.text, senhaController.text, context),
                 buttonWidth: 275,
                 buttonHeight: 36)
           ],
@@ -84,13 +91,18 @@ class loginBoxMobile extends StatelessWidget {
     String senha,
     BuildContext context,
   ) async {
-    var login = await repository.doLogin(email, senha);
+    try {
+      emailController.text = "";
+      senhaController.text = "";
 
-    if (login) {
-      Navigator.pushNamed(
-        context,
-        '/homepage',
-      );
-    }
+      var login = await repository.doLogin(email, senha);
+      print("funciona");
+      if (login) {
+        Navigator.pushNamed(
+          context,
+          '/homepage',
+        );
+      }
+    } on Exception catch (e) {}
   }
 }
