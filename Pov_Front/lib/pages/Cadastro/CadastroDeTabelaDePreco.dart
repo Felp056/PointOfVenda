@@ -24,6 +24,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
   List<Map<String, dynamic>> tabelasDePreco = [];
   List<Map<String, dynamic>> todosProdutos = [];
   int? selectedCodigoTabela; // Armazena o código da tabela selecionada
+  int? idTabela;
 
   @override
   void initState() {
@@ -68,10 +69,13 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
               itemBuilder: (BuildContext context, int index) {
                 final tabela = tabelasDePreco[index];
                 return ListTile(
-                  title: Text(tabela["nomeTabela"] ?? ""),
-                  subtitle: Text("Código: ${tabela["codigoTabela"] ?? ""}"),
+                  title: Text("Nome : ${tabela["NomeTabela"] ?? ""}"),
+                  subtitle: Text("Código: ${tabela["CodTabela"] ?? ""}"),
                   onTap: () {
-                    selectedCodigoTabela = tabela["codigoTabela"]; // Armazena o código da tabela selecionada
+                    selectedCodigoTabela = tabela["CodTabela"];
+                    idTabela = tabela["id"];
+                    codigoTabelaController.text = selectedCodigoTabela.toString();
+                    nomeController.text = tabela["NomeTabela"];
                     _carregarProdutos(selectedCodigoTabela!); // Carrega os produtos da tabela
                     Navigator.of(context).pop();
                   },
@@ -86,15 +90,16 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
 
   // Carrega as tabelas de preço disponíveis
   Future<void> _carregarTabelasDePreco() async {
-    final Uri url = Uri.parse("http://localhost:8080/api/tabelasPreco");
+    final Uri url = Uri.parse("http://localhost:8080/api/preco/todas");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         setState(() {
           tabelasDePreco = data.map((item) => {
-            "codigoTabela": item['codigoTabela'],
-            "nomeTabela": item['nomeTabela'],
+            "id" : item['id'],
+            "CodTabela": item['CodTabela'],
+            "NomeTabela": item['NomeTabela'],
           }).toList();
         });
       } else {
@@ -159,10 +164,11 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
   // Salva as alterações feitas na tabela de preço selecionada
   Future<void> _salvarAlteracoesTabelaDePreco() async {
       final tabelaPrecoData = {
+        "id": selectedCodigoTabela != null ? idTabela : null,
       "CodTabela": selectedCodigoTabela ?? codigoTabelaController.text,
       "NomeTabela": nomeController.text,
       "Promocao": false,
-      "produtos": precos.map((produto) => {
+      "Produtos": precos.map((produto) => {
         "idProduto": produto["idProduto"],
         "Descricao": produto["Descricao"],
         "CodBarras": produto["CodBarras"],
@@ -171,20 +177,19 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
         "Preco": produto["Preco"],
       }).toList(),
     };
-
       final dio = Dio();
     try {
       final Uri url =  selectedCodigoTabela == null ? Uri.parse("http://localhost:8080/api/preco/adicionar") : Uri.parse("http://localhost:8080/api/preco/atualizar?id="+selectedCodigoTabela.toString());
       const headers = {
         'Content-Type': 'application/json',
       };
-      dio.interceptors.add(LogInterceptor(
+      /*dio.interceptors.add(LogInterceptor(
         request: true,
         requestHeader: true,
         requestBody: true,
         responseBody: true,
         responseHeader: true,
-      ));
+      ));*/
       final response = await dio.postUri(
         url,
         options: Options( contentType: 'application/json'),

@@ -46,8 +46,8 @@ public class PrecoRestController {
     }
 
     @PostMapping(path = "/atualizar")
-    public ResponseEntity atualizar(@RequestBody Preco preco, @RequestParam int id){
-        Preco pre = precoService.getPrecoById(id);
+    public ResponseEntity atualizar(@RequestBody Preco preco){
+        Preco pre = precoService.getPrecoById(preco.getId());
         if(validateProduto(preco)) {
             if (preco == null) {
                 return ResponseEntity.badRequest().build();
@@ -76,7 +76,7 @@ public class PrecoRestController {
         if(preco.getProdutos() != null) {
             List<Produto> listProd = produtoService.getAllProduto();
             for (Produto prod : preco.getProdutos()) {
-                if (!(listProd.get(listProd.indexOf(prod)).getIdProduto() == prod.getIdProduto())) {
+                if (!(listProd.get(listProd.indexOf(prod)).getDescricao() == prod.getDescricao())) {
                     return false;
                 }
             }

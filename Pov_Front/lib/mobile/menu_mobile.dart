@@ -13,7 +13,7 @@ class MenuMobile extends StatefulWidget {
 class _MenuMobileState extends State<MenuMobile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(/*
       appBar: MobileAppBar(),
       body: Center(
         child: Container(
@@ -36,7 +36,7 @@ class _MenuMobileState extends State<MenuMobile> {
               )
             ],
           )),
-    );
+    */);
   }
 
   void transmitirPedidos() {

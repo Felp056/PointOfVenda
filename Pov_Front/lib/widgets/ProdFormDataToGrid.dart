@@ -21,8 +21,24 @@ class Prodformdatatogrid extends StatefulWidget {
     required this.onRemove,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      "idProduto": id,
+      "Descricao": nomeController.text,
+      "CodBarras": int.tryParse(codBarrasController.text) ?? 0,
+      "QtdDisponivel": int.tryParse(qtdDisponivelController.text) ?? 0,
+      "Medida": medidaController.text,
+      "Preco": double.tryParse(precoController.text) ?? 0.0,
+      "Promocao": promocao,
+      "codBarrasController": TextEditingController(),
+      "qtdDisponivelController": TextEditingController(),
+      "medidaController": TextEditingController(),
+      "precoController": TextEditingController(),
+    };
+  }
   @override
   _ProdformdatatogridState createState() => _ProdformdatatogridState();
+
 
   TextEditingController nomeController = TextEditingController();
   TextEditingController codBarrasController = TextEditingController();
