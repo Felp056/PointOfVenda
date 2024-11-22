@@ -17,16 +17,16 @@ class _VendaMobileState extends State<VendaMobile> {
 
   @override
   void initState() {
-    itensVenda = List.empty(growable: true,);
-    itensVenda.add(
-      mobileButton(
-        buttonName: '', 
-        buttonFunction: add, 
-        buttonWidth: 300, 
-        buttonHeight: 50,
-        icon: Icon(Icons.add),
-        )
+    itensVenda = List.empty(
+      growable: true,
     );
+    itensVenda.add(mobileButton(
+      buttonName: '',
+      buttonFunction: add,
+      buttonWidth: 300,
+      buttonHeight: 50,
+      icon: Icon(Icons.add),
+    ));
   }
 
   @override
@@ -36,12 +36,11 @@ class _VendaMobileState extends State<VendaMobile> {
       body: Container(
         alignment: Alignment.center,
         child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                children: itensVenda,
-              ),
-            ),
-        
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: itensVenda,
+          ),
+        ),
       ),
     );
   }
@@ -51,4 +50,6 @@ class _VendaMobileState extends State<VendaMobile> {
       itensVenda.add(WidgetItensVenda());
     });
   }
+
+  fecharPedido() {}
 }

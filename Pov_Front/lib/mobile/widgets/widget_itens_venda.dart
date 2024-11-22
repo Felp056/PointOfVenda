@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:pov_web/DataModels/Produto.dart';
 import 'package:pov_web/Repository/ProdutoRepository.dart';
@@ -16,6 +17,7 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
   List<DropdownMenuItem<Produto>> produtos = [];
   Produto? prodSelecionado;
   dynamic result;
+  double altura = 40;
 
   @override
   void initState() {
@@ -30,36 +32,98 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
         result.length,
         (index) => DropdownMenuItem(
           value: result[index],
-          child: Text(result.elementAt(index).Descricao),),);
+          child: Text(result.elementAt(index).Descricao),
+        ),
+      );
       prodSelecionado = result[0];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
-      height: 68,
-      width: 300,
+    return ColoredBox(
+      color: Colors.white,
       child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: [
           Column(
             children: [
-              DropdownButton(
-                items: produtos, 
-                value: prodSelecionado,
-                onChanged: (value) {
-                  setState(() {
-                    prodSelecionado = value!;
-                  });
-                },
+              SizedBox(
+                width: 170,
+                height: altura,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    items: produtos,
+                    value: prodSelecionado,
+                    onChanged: (value) {
+                      setState(() {
+                        prodSelecionado = value!;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.only(left: 14, right: 14),
+                    ),
+                  ),
+                ),
               ),
-              Text(prodSelecionado!.QtdDisponivel.toString()),
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Quantidade: ",
+                  ),
+                ),
+              )
             ],
           ),
           Column(
-            children: [],
+            children: [
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Valor Un: ",
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Total: ",
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],)
+        ],
+      ),
     );
   }
 }
