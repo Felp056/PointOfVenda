@@ -102,7 +102,20 @@ class loginBoxMobile extends StatelessWidget {
           context,
           '/homepage',
         );
+      } else {
+        _showDeniedMessage(context);
       }
     } on Exception catch (e) {}
+  }
+
+  void _showDeniedMessage(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text("Credenciais Inválidas"),
+      backgroundColor: Colors.red,
+      duration: Duration(seconds: 5),
+    );
+
+    // Mostra o SnackBar na tela
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
