@@ -11,13 +11,13 @@ import lombok.Setter;
 @Setter
 public class Venda {
     @Id
-    @JsonProperty("NivelAcesso")
+    @JsonProperty("id")
     private long id;
-    @JsonProperty("NivelAcesso")
+    @JsonProperty("idPedido")
     private long idPedido;
-    @JsonProperty("NivelAcesso")
+    @JsonProperty("ValorPedido")
     private double ValorPedido;
-    @JsonProperty("NivelAcesso")
+    @JsonProperty("FormaPagamento")
     private String FormaPagamento;
     @JsonProperty("CreditoDisponivel")
     private double CreditoDisponivel;
