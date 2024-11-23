@@ -55,6 +55,9 @@ public class PrecoRestController {
                 pre.setPromocao(preco.isPromocao());
                 if (preco.getProdutos() != null) {
                     pre.setProdutos(preco.getProdutos());
+                    for(Produto prod : pre.getProdutos()){
+                        produtoService.save(prod);
+                    }
                 }
                 if (!preco.getNomeTabela().isEmpty() && !preco.getNomeTabela().isEmpty()) {
                     pre.setNomeTabela(preco.getNomeTabela());
@@ -76,7 +79,8 @@ public class PrecoRestController {
         if(preco.getProdutos() != null) {
             List<Produto> listProd = produtoService.getAllProduto();
             for (Produto prod : preco.getProdutos()) {
-                if (!(listProd.get(listProd.indexOf(prod)).getDescricao() == prod.getDescricao())) {
+                int index = listProd.size() -1 ;
+                if (index == -1 || !(listProd.get(index).getCodBarras() == prod.getCodBarras())) {
                     return false;
                 }
             }
