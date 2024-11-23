@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:pov_web/afterLogin.dart';
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 import 'package:pov_web/pages/Cadastro/CadastroDeProduto.dart';
-import 'package:pov_web/widgets/ProdFormDataToGrid.dart';
 import 'package:pov_web/widgets/dropMenu.dart';
 
 class Cadastrodetabeladepreco extends StatefulWidget {
@@ -22,8 +21,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
   final TextEditingController codigoTabelaController = TextEditingController();
   List<Map<String, dynamic>> precos = [];
   List<Map<String, dynamic>> tabelasDePreco = [];
-  List<Map<String, dynamic>> todosProdutos = [];
-  int? selectedCodigoTabela; // Armazena o código da tabela selecionada
+  int? selectedCodigoTabela;
   int? idTabela;
 
   @override
@@ -32,28 +30,48 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
     _carregarTodosProdutos();
   }
 
-  // Carrega a lista de todos os produtos para o dropdown
+  // Carrega todos os produtos
   Future<void> _carregarTodosProdutos() async {
     final Uri url = Uri.parse("http://localhost:8080/api/produtos");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
         setState(() {
-          todosProdutos = data.map((produto) => {
-            "idProduto": produto['idProduto'],
-            "Descricao": produto['Descricao']
-          }).toList();
+          precos = [];
         });
       } else {
         print("Erro ao carregar produtos: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Erro ao carregar produtos: $e");
+    }
+  }
+
+  // Carrega todas as tabelas de preço
+  Future<void> _carregarTabelasDePreco() async {
+    final Uri url = Uri.parse("http://localhost:8080/api/preco/todas");
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          tabelasDePreco = data.map((tabela) {
+            return {
+              "id": tabela['id'],
+              "CodTabela": tabela['CodTabela'],
+              "NomeTabela": tabela['NomeTabela'],
+            };
+          }).toList();
+        });
+      } else {
+        print("Erro ao carregar tabelas de preço: ${response.statusCode}");
       }
     } catch (e) {
       print("Erro na requisição: $e");
     }
   }
 
-  // Abre o popup para selecionar uma tabela de preço e carrega seus dados ao selecionar
+  // Mostra popup para selecionar uma tabela de preço
   void _mostrarPopupTabelasDePreco() async {
     await _carregarTabelasDePreco();
 
@@ -66,17 +84,17 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
             width: double.maxFinite,
             child: ListView.builder(
               itemCount: tabelasDePreco.length,
-              itemBuilder: (BuildContext context, int index) {
+              itemBuilder: (context, index) {
                 final tabela = tabelasDePreco[index];
                 return ListTile(
-                  title: Text("Nome : ${tabela["NomeTabela"] ?? ""}"),
-                  subtitle: Text("Código: ${tabela["CodTabela"] ?? ""}"),
+                  title: Text("Nome: ${tabela['NomeTabela'] ?? ''}"),
+                  subtitle: Text("Código: ${tabela['CodTabela'] ?? ''}"),
                   onTap: () {
-                    selectedCodigoTabela = tabela["CodTabela"];
-                    idTabela = tabela["id"];
+                    selectedCodigoTabela = tabela['CodTabela'];
+                    idTabela = tabela['id'];
+                    nomeController.text = tabela['NomeTabela'] ?? '';
                     codigoTabelaController.text = selectedCodigoTabela.toString();
-                    nomeController.text = tabela["NomeTabela"];
-                    _carregarProdutos(selectedCodigoTabela!); // Carrega os produtos da tabela
+                    _carregarProdutosDaTabela(selectedCodigoTabela!);
                     Navigator.of(context).pop();
                   },
                 );
@@ -88,44 +106,21 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
     );
   }
 
-  // Carrega as tabelas de preço disponíveis
-  Future<void> _carregarTabelasDePreco() async {
-    final Uri url = Uri.parse("http://localhost:8080/api/preco/todas");
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
-        setState(() {
-          tabelasDePreco = data.map((item) => {
-            "id" : item['id'],
-            "CodTabela": item['CodTabela'],
-            "NomeTabela": item['NomeTabela'],
-          }).toList();
-        });
-      } else {
-        print("Erro ao carregar tabelas de preço: ${response.statusCode}");
-      }
-    } catch (e) {
-      print("Erro na requisição: $e");
-    }
-  }
-
-  // Carrega os produtos para a tabela de preço selecionada
-  Future<void> _carregarProdutos(int codigoTabela) async {
+  // Carrega os produtos da tabela selecionada
+  Future<void> _carregarProdutosDaTabela(int codigoTabela) async {
     final Uri url = Uri.parse("http://localhost:8080/api/preco/$codigoTabela");
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
-
+        final Map<String, dynamic> data = json.decode(response.body);
         setState(() {
           precos = (data['produto'] as List).map((produto) {
             return {
               "idProduto": produto['idProduto'],
               "Descricao": produto['Descricao'],
-              "CodBarras": produto['CodBarras'] ?? "",
+              "CodBarras": produto['CodBarras'] ?? '',
               "QtdDisponivel": produto['QtdDisponivel'] ?? 0,
-              "Medida": produto['Medida'] ?? "",
+              "Medida": produto['Medida'] ?? '',
               "Preco": produto['Preco'] ?? 0.0,
               "Promocao": produto['Promocao'] ?? false,
             };
@@ -139,71 +134,87 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
     }
   }
 
-  // Adiciona uma nova linha para adicionar um produto
-  void _adicionarLinhaProduto() {
-    setState(() {
-      precos.add({
-        "idProduto": null,
-        "Descricao": null,
-        "CodBarras": 0,
-        "QtdDisponivel": 0,
-        "Medida": "",
-        "Preco": 0,
-        "Promocao": false,
-      });
-    });
-  }
-
-  // Remove o produto da tabela selecionada pelo índice
+  // Remove o produto de uma linha
   void _removerProduto(int index) {
     setState(() {
       precos.removeAt(index);
     });
   }
 
-  // Salva as alterações feitas na tabela de preço selecionada
+  // Salva as alterações feitas
   Future<void> _salvarAlteracoesTabelaDePreco() async {
-      final tabelaPrecoData = {
-        "id": selectedCodigoTabela != null ? idTabela : null,
-      "CodTabela": selectedCodigoTabela ?? codigoTabelaController.text,
-      "NomeTabela": nomeController.text,
-      "Promocao": false,
-      "Produtos": precos.map((produto) => {
-        "idProduto": produto["idProduto"],
-        "Descricao": produto["Descricao"],
-        "CodBarras": produto["CodBarras"],
-        "QtdDisponivel": produto["QtdDisponivel"],
-        "Medida": produto["Medida"],
-        "Preco": produto["Preco"],
-      }).toList(),
-    };
-      final dio = Dio();
     try {
-      final Uri url =  selectedCodigoTabela == null ? Uri.parse("http://localhost:8080/api/preco/adicionar") : Uri.parse("http://localhost:8080/api/preco/atualizar?id="+selectedCodigoTabela.toString());
-      const headers = {
-        'Content-Type': 'application/json',
+      // 1. Obter lista de produtos do backend
+      final Uri urlProdutos = Uri.parse("http://localhost:8080/api/produto/todas");
+      final response = await http.get(urlProdutos);
+
+      if (response.statusCode != 200) {
+        print("Erro ao buscar lista de produtos: ${response.statusCode}");
+        return;
+      }
+
+      // Decodificar lista de produtos
+      List<dynamic> produtosBackend = json.decode(response.body);
+
+      // 2. Atualizar os IDs dos produtos no array `precos`
+      for (var produto in precos) {
+        // Busca o produto no backend com base na Descrição ou outro critério
+        final produtoCorrespondente = produtosBackend.firstWhere(
+              (p) => p["CodBarras"] == produto["CodBarras"], // Critério de comparação
+          orElse: () => null,
+        );
+
+        if (produtoCorrespondente != null) {
+          produto["idProduto"] = produtoCorrespondente["idProduto"];
+        } else {
+          print("Produto não encontrado no backend: ${produto["Descricao"]}");
+        }
+      }
+
+      // 3. Criar objeto para envio
+      final tabelaPrecoData = {
+        "id": idTabela,
+        "CodTabela": selectedCodigoTabela ?? codigoTabelaController.text,
+        "NomeTabela": nomeController.text,
+        "Promocao": false,
+        "Produtos": precos, // Produtos atualizados com IDs
       };
-      /*dio.interceptors.add(LogInterceptor(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        responseHeader: true,
-      ));*/
-      final response = await dio.postUri(
-        url,
-        options: Options( contentType: 'application/json'),
+
+      // 4. Enviar os dados ao backend
+      final dio = Dio();
+      final Uri urlSalvar = selectedCodigoTabela == null
+          ? Uri.parse("http://localhost:8080/api/preco/adicionar")
+          : Uri.parse("http://localhost:8080/api/preco/atualizar?id=$selectedCodigoTabela");
+
+      final responseSalvar = await dio.postUri(
+        urlSalvar,
+        options: Options(contentType: 'application/json'),
         data: json.encode(tabelaPrecoData),
       );
 
-      if (response.statusCode == 201) {
+      if (responseSalvar.statusCode == 200) {
         print("Tabela de preço e produtos salvos com sucesso!");
       } else {
-        print("Erro ao salvar a tabela de preço: ${response.statusCode}");
+        print("Erro ao salvar tabela de preço: ${responseSalvar.statusCode}");
       }
     } catch (e) {
-      print("Erro na requisição de salvamento: $e");
+      print("Erro ao salvar tabela de preço: $e");
     }
+  }
+
+// Adiciona uma nova linha com valores padrão
+  void _adicionarLinhaProduto() {
+    setState(() {
+      precos.add({
+        "idProduto": null,
+        "Descricao": '',
+        "CodBarras": '',
+        "QtdDisponivel": 0,
+        "Medida": '',
+        "Preco": 0.0,
+        "Promocao": false,
+      });
+    });
   }
 
   @override
@@ -241,7 +252,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            // Campos de entrada para o cadastro de uma nova tabela
+            // Campos de entrada para cadastro
             Container(
               width: MediaQuery.of(context).size.width * 0.95,
               padding: EdgeInsets.all(16),
@@ -267,7 +278,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                   ),
                   SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: _salvarAlteracoesTabelaDePreco, // Salva a tabela de preço
+                    onPressed: _salvarAlteracoesTabelaDePreco,
                     child: Text("Salvar Tabela", style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.green, padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18)),
                   ),
@@ -276,7 +287,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
             ),
             SizedBox(height: 16),
 
-            // Botões de Ações: Adicionar Linha, Pesquisar e Salvar Grade
+            // Botões de ações
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -287,16 +298,13 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: _mostrarPopupTabelasDePreco, // Abre popup para selecionar a tabela de preço
+                  onPressed: _mostrarPopupTabelasDePreco,
                   child: Icon(Icons.search, color: Colors.white, size: 28),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18)),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: _salvarAlteracoesTabelaDePreco, // Salva as alterações na tabela selecionada
+                  onPressed: _salvarAlteracoesTabelaDePreco,
                   child: Text("Salvar Alterações", style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green, padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18)),
                 ),
@@ -314,7 +322,7 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
                 ),
-                child: Expanded(child: SingleChildScrollView(
+                child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: DataTable(
                     columnSpacing: MediaQuery.of(context).size.width * 0.095,
@@ -332,22 +340,41 @@ class _CadastrodetabeladeprecoState extends State<Cadastrodetabeladepreco> {
                       int index = entry.key;
                       Map<String, dynamic> produto = entry.value;
 
-                      var produtoWidget = Prodformdatatogrid(
-                        nome: produto["Descricao"] ?? "",
-                        codBarras: produto["CodBarras"] ?? 0,
-                        qtdDisponivel: produto["QtdDisponivel"] ?? 0,
-                        medida: produto["Medida"] ?? "",
-                        preco: produto["Preco"] ?? 0,
-                        promocao: produto["Promocao"] ?? false,
-                        id: produto["idProduto"] ?? 0,
-                        onRemove: () => _removerProduto(index),
+                      return DataRow(
+                        cells: [
+                          DataCell(TextField(
+                            controller: TextEditingController(text: produto["Descricao"]),
+                            onChanged: (value) => precos[index]["Descricao"] = value,
+                          )),
+                          DataCell(TextField(
+                            controller: TextEditingController(text: produto["CodBarras"].toString()),
+                            onChanged: (value) => precos[index]["CodBarras"] = int.tryParse(value) ?? 0,
+                          )),
+                          DataCell(TextField(
+                            controller: TextEditingController(text: produto["QtdDisponivel"].toString()),
+                            onChanged: (value) => precos[index]["QtdDisponivel"] = int.tryParse(value) ?? 0,
+                          )),
+                          DataCell(TextField(
+                            controller: TextEditingController(text: produto["Medida"]),
+                            onChanged: (value) => precos[index]["Medida"] = value,
+                          )),
+                          DataCell(TextField(
+                            controller: TextEditingController(text: produto["Preco"].toString()),
+                            onChanged: (value) => precos[index]["Preco"] = double.tryParse(value) ?? 0.0,
+                          )),
+                          DataCell(Checkbox(
+                            value: produto["Promocao"],
+                            onChanged: (value) => setState(() => precos[index]["Promocao"] = value ?? false),
+                          )),
+                          DataCell(IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => _removerProduto(index),
+                          )),
+                        ],
                       );
-
-                      return produtoWidget.toDataRow();
                     }).toList(),
                   ),
                 ),
-              ),
               ),
             ),
           ],
