@@ -1,9 +1,12 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:pov_web/DataModels/Produto.dart';
 import 'package:pov_web/Repository/ProdutoRepository.dart';
 
 class WidgetItensVenda extends StatefulWidget {
-  ProdutoRepository produtoRepository = ProdutoRepository();
+  WidgetItensVenda({
+    super.key,
+  });
 
   @override
   State<WidgetItensVenda> createState() => _WidgetItensVendaState();
@@ -11,7 +14,10 @@ class WidgetItensVenda extends StatefulWidget {
 
 class _WidgetItensVendaState extends State<WidgetItensVenda> {
   ProdutoRepository produtoRepository = ProdutoRepository();
-  List<Produto> produtos = [];
+  List<DropdownMenuItem<Produto>> produtos = [];
+  Produto? prodSelecionado;
+  dynamic result;
+  double altura = 40;
 
   @override
   void initState() {
@@ -20,24 +26,104 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
   }
 
   Future<void> _getAllProdutos() async {
-    final result = await produtoRepository.getAllProdutos();
+    result = await produtoRepository.getAllProdutos();
     setState(() {
-      produtos = result;
+      produtos = List.generate(
+        result.length,
+        (index) => DropdownMenuItem(
+          value: result[index],
+          child: Text(result.elementAt(index).Descricao),
+        ),
+      );
+      prodSelecionado = result[0];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: produtos.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.add_shopping_cart),
-            title: Text(produtos.elementAt(index).idProduto.toString() +
-                " - " +
-                produtos.elementAt(index).Descricao),
-            subtitle: Text(produtos.elementAt(index).CodBarras.toString()),
-          );
-        });
+    return ColoredBox(
+      color: Colors.white,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Column(
+            children: [
+              SizedBox(
+                width: 170,
+                height: altura,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    isExpanded: true,
+                    items: produtos,
+                    value: prodSelecionado,
+                    onChanged: (value) {
+                      setState(() {
+                        prodSelecionado = value!;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 200,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 40,
+                      padding: EdgeInsets.only(left: 14, right: 14),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Quantidade: ",
+                  ),
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Valor Un: ",
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: altura,
+                child: TextField(
+                  key: GlobalKey(),
+                  decoration: const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    hintText: "Total: ",
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
