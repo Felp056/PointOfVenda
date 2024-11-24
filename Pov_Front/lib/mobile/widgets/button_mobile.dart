@@ -13,10 +13,10 @@ class mobileButton extends StatelessWidget {
     this.textCor,
   });
 
-  String buttonName;
-  VoidCallback buttonFunction;
-  double buttonWidth;
-  double buttonHeight;
+  final String buttonName;
+  final VoidCallback buttonFunction;
+  final double buttonWidth;
+  final double buttonHeight;
   Icon? icon;
   Color? cor;
   Color? iconCor;
