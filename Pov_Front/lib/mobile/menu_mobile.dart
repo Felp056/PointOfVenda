@@ -12,8 +12,12 @@ class MenuMobile extends StatefulWidget {
 }
 
 class _MenuMobileState extends State<MenuMobile> {
+  double altura = .0;
+  double largura = .0;
   @override
   Widget build(BuildContext context) {
+    altura = MediaQuery.of(context).size.height;
+    largura = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: MobileAppBar(
         pageTitle: "Menu",
@@ -23,27 +27,43 @@ class _MenuMobileState extends State<MenuMobile> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              const SizedBox(height: 10),
-              mobileButton(
-                buttonName: "Nova venda",
-                buttonFunction: novaVenda,
-                buttonWidth: 275,
-                buttonHeight: 36,
+              Padding(
+                padding: EdgeInsets.all(
+                  altura * .025,
+                ),
+                child: mobileButton(
+                  buttonName: "Nova venda",
+                  buttonFunction: novaVenda,
+                  buttonWidth: largura * .8,
+                  buttonHeight: altura * .07,
+                ),
               ),
-              const SizedBox(height: 10),
-              mobileButton(
-                buttonName: "Enviar Pedidos",
-                buttonFunction: transmitirPedidos,
-                buttonWidth: 275,
-                buttonHeight: 36,
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: altura * .025,
+                  left: altura * .025,
+                  right: altura * .025,
+                ),
+                child: mobileButton(
+                  buttonName: "Transmitir Pedidos",
+                  buttonFunction: transmitirPedidos,
+                  buttonWidth: largura * .8,
+                  buttonHeight: altura * .07,
+                ),
               ),
-              const SizedBox(height: 10),
-              mobileButton(
-                buttonName: "Receber Carga",
-                buttonFunction: receberCarga,
-                buttonWidth: 275,
-                buttonHeight: 36,
-              )
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: altura * .025,
+                  left: altura * .025,
+                  right: altura * .025,
+                ),
+                child: mobileButton(
+                  buttonName: "Receber Carga",
+                  buttonFunction: receberCarga,
+                  buttonWidth: largura * .8,
+                  buttonHeight: altura * .07,
+                ),
+              ),
             ],
           ),
         ),
