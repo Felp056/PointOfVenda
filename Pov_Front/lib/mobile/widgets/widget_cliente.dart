@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class WidgetCliente extends StatefulWidget {
@@ -20,13 +19,13 @@ class _WidgetClienteState extends State<WidgetCliente> {
     // TODO: implement build
     return Container(
       color: Colors.amberAccent,
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 10,
         left: 10,
         right: 10,
       ),
-      padding: EdgeInsets.all(5),
-      child: Row(
+      padding: const EdgeInsets.all(5),
+      child: const Row(
         //color: Color.fromRGBO(218, 210, 216, 1),
         //child: Container(
         children: [
