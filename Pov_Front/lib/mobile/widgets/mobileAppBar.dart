@@ -7,7 +7,7 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   final Color appBarColor = Color.fromRGBO(217, 4, 39, 1);
-  String pageTitle;
+  final String pageTitle;
 
   @override
   Size get preferredSize => Size.fromHeight(60.0);
