@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/Repository/UserRepository.dart';
-import 'package:pov_web/mobile/widgets/loginBoxMobile.dart';
+import 'package:pov_web/mobile/widgets/login_box_mobile.dart';
 import 'package:pov_web/mobile/widgets/mobileAppBar.dart';
 
 class LoginMobile extends StatefulWidget {
