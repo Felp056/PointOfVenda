@@ -8,6 +8,9 @@ class mobileButton extends StatelessWidget {
     required this.buttonWidth,
     required this.buttonHeight,
     this.icon,
+    this.cor,
+    this.iconCor,
+    this.textCor,
   });
 
   String buttonName;
@@ -15,9 +18,15 @@ class mobileButton extends StatelessWidget {
   double buttonWidth;
   double buttonHeight;
   Icon? icon;
+  Color? cor;
+  Color? iconCor;
+  Color? textCor;
 
   @override
   Widget build(BuildContext context) {
+    cor ??= const Color.fromRGBO(236, 154, 41, 1);
+    iconCor ??= Colors.white;
+    textCor ??= Colors.white;
     return SizedBox(
       width: buttonWidth,
       height: buttonHeight,
@@ -25,18 +34,19 @@ class mobileButton extends StatelessWidget {
         icon: icon,
         label: Text(
           buttonName,
-          style: const TextStyle(
-            color: Color.fromRGBO(255, 255, 255, 1),
+          style: TextStyle(
+            color: textCor,
             fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
         onPressed: buttonFunction,
         style: ElevatedButton.styleFrom(
-          iconColor: Colors.white,
+            iconColor: iconCor,
             shape: BeveledRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
-            backgroundColor: const Color.fromRGBO(236, 154, 41, 1),
+            backgroundColor: cor,
             textStyle:
                 const TextStyle(color: Color.fromRGBO(255, 255, 255, 1))),
       ),
