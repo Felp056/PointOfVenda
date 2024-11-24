@@ -23,7 +23,7 @@ class _LoginMobileState extends State<LoginMobile> {
         appBar: MobileAppBar(
           pageTitle: "Point of Venda",
         ),
-        body: loginBoxMobile(
+        body: LoginBoxMobile(
           emailController: emailControler,
           senhaController: senhaControler,
           repository: repository,
