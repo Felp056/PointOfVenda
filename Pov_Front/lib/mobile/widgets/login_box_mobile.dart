@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pov_web/Repository/UserRepository.dart';
 import 'package:pov_web/mobile/widgets/button_mobile.dart';
 
-/*
-TODO:  
-  - Corrigir cor da fonte no botão Entrar
-*/
-
-class loginBoxMobile extends StatelessWidget {
-  const loginBoxMobile({
+class LoginBoxMobile extends StatelessWidget {
+  const LoginBoxMobile({
     super.key,
     required this.emailController,
     required this.senhaController,
@@ -74,7 +69,7 @@ class loginBoxMobile extends StatelessWidget {
                       fillColor: Colors.white)),
             ),
             const SizedBox(height: 10),
-            mobileButton(
+            MobileButton(
                 buttonName: "Entrar",
                 buttonFunction: () =>
                     entrar(emailController.text, senhaController.text, context),
@@ -96,7 +91,6 @@ class loginBoxMobile extends StatelessWidget {
       senhaController.text = "";
 
       var login = await repository.doLogin(email, senha);
-      print("funciona");
       if (login) {
         Navigator.pushNamed(
           context,
@@ -105,7 +99,9 @@ class loginBoxMobile extends StatelessWidget {
       } else {
         _showDeniedMessage(context);
       }
-    } on Exception catch (e) {}
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
   }
 
   void _showDeniedMessage(BuildContext context) {

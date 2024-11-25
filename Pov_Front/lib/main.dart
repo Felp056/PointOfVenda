@@ -1,17 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pov_web/DataModels/pedido.dart';
+import 'package:pov_web/Repository/PedidoRepository.dart';
 import 'package:pov_web/afterLogin.dart';
+import 'package:pov_web/mobile/checkout_mobile.dart';
 import 'package:pov_web/mobile/login_mobile.dart';
 import 'dart:io' show Platform;
 
 import 'package:pov_web/mobile/menu_mobile.dart';
 import 'package:pov_web/mobile/venda_mobile.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   if (kIsWeb) {
     runApp(const MyApp());
   } else if (Platform.isAndroid) {
-    runApp(const MyAppMobile());
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => PedidoRepository()),
+          ChangeNotifierProvider(create: (context) => Pedido())
+        ],
+        child: const MyAppMobile(),
+      ),
+    );
   }
 }
 
@@ -39,11 +51,12 @@ class MyAppMobile extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFEDF2F4)),
         useMaterial3: true,
       ),
-      home: LoginMobile(),
+      home: const LoginMobile(),
       routes: <String, WidgetBuilder>{
-        '/loginpage': (BuildContext context) => new LoginMobile(),
-        '/homepage': (BuildContext context) => new MenuMobile(),
-        '/vendas': (BuildContext context) => new VendaMobile(),
+        '/loginpage': (BuildContext context) => const LoginMobile(),
+        '/homepage': (BuildContext context) => const MenuMobile(),
+        '/vendas': (BuildContext context) => VendaMobile(),
+        '/checkout': (BuildContext context) => const CheckoutMobile(),
       },
     );
   }
