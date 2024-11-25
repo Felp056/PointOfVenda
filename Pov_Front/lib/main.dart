@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pov_web/DataModels/pedido.dart';
+import 'package:pov_web/Repository/PedidoRepository.dart';
 import 'package:pov_web/afterLogin.dart';
 import 'package:pov_web/mobile/checkout_mobile.dart';
 import 'package:pov_web/mobile/login_mobile.dart';
@@ -15,8 +16,11 @@ void main() {
     runApp(const MyApp());
   } else if (Platform.isAndroid) {
     runApp(
-      ChangeNotifierProvider(
-        create: (context) => Pedido(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => PedidoRepository()),
+          ChangeNotifierProvider(create: (context) => Pedido())
+        ],
         child: const MyAppMobile(),
       ),
     );
@@ -47,11 +51,11 @@ class MyAppMobile extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFEDF2F4)),
         useMaterial3: true,
       ),
-      home: LoginMobile(),
+      home: const LoginMobile(),
       routes: <String, WidgetBuilder>{
         '/loginpage': (BuildContext context) => const LoginMobile(),
         '/homepage': (BuildContext context) => const MenuMobile(),
-        '/vendas': (BuildContext context) => const VendaMobile(),
+        '/vendas': (BuildContext context) => VendaMobile(),
         '/checkout': (BuildContext context) => const CheckoutMobile(),
       },
     );
