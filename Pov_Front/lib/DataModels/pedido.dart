@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pov_web/DataModels/Produto.dart';
 
 class Pedido extends ChangeNotifier {
@@ -28,4 +28,13 @@ class Pedido extends ChangeNotifier {
   }
 
   salvar() {}
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idPedido': idPedido,
+      'valorPedido': valorPedido,
+      'formaPagamento': formaPagamento,
+      'creditoDisponivel': creditoDisponivel,
+    };
+  }
 }
