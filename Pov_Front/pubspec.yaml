@@ -39,6 +39,8 @@ dependencies:
   dio: ^5.7.0
   dropdown_button2: ^2.3.9
   provider: ^6.1.2
+  sqflite: ^2.0.0+3
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
