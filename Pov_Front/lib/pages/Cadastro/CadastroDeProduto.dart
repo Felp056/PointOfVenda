@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pov_web/pages/Cadastro/CadastroDeAcesso.dart';
 import 'package:pov_web/pages/Cadastro/CadastroDeParticipante.dart';
 import '../../afterLogin.dart';
 import '../../widgets/dropMenu.dart';
@@ -173,6 +174,9 @@ class _CadastrodeprodutoState extends State<Cadastrodeproduto> {
             break;
           case "Tabela de Preço":
             targetPage = Cadastrodetabeladepreco(title: "Cadastro de Tabela de Preço");
+            break;
+          case "Acesso":
+            targetPage = CadastroDeAcesso(title: "Cadastro de Acesso");
             break;
           default:
             targetPage = afterLogin(title: "P.O.V");

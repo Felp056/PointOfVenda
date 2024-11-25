@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("idProduto")
+    @JsonProperty("Id")
     private int Id;
     @JsonProperty("Email")
     private String Email;
