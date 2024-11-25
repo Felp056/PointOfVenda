@@ -69,7 +69,7 @@ class LoginBoxMobile extends StatelessWidget {
                       fillColor: Colors.white)),
             ),
             const SizedBox(height: 10),
-            mobileButton(
+            MobileButton(
                 buttonName: "Entrar",
                 buttonFunction: () =>
                     entrar(emailController.text, senhaController.text, context),

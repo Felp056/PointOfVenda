@@ -19,7 +19,7 @@ class _MenuMobileState extends State<MenuMobile> {
     altura = MediaQuery.of(context).size.height;
     largura = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: MobileAppBar(
+      appBar: const MobileAppBar(
         pageTitle: "Menu",
       ),
       body: Center(
@@ -31,7 +31,7 @@ class _MenuMobileState extends State<MenuMobile> {
                 padding: EdgeInsets.all(
                   altura * .025,
                 ),
-                child: mobileButton(
+                child: MobileButton(
                   buttonName: "Nova venda",
                   buttonFunction: novaVenda,
                   buttonWidth: largura * .8,
@@ -44,7 +44,7 @@ class _MenuMobileState extends State<MenuMobile> {
                   left: altura * .025,
                   right: altura * .025,
                 ),
-                child: mobileButton(
+                child: MobileButton(
                   buttonName: "Transmitir Pedidos",
                   buttonFunction: transmitirPedidos,
                   buttonWidth: largura * .8,
@@ -57,7 +57,7 @@ class _MenuMobileState extends State<MenuMobile> {
                   left: altura * .025,
                   right: altura * .025,
                 ),
-                child: mobileButton(
+                child: MobileButton(
                   buttonName: "Receber Carga",
                   buttonFunction: receberCarga,
                   buttonWidth: largura * .8,

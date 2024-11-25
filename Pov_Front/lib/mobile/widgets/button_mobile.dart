@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class mobileButton extends StatelessWidget {
-  mobileButton({
+class MobileButton extends StatelessWidget {
+  MobileButton({
     super.key,
     required this.buttonName,
     required this.buttonFunction,
@@ -44,7 +44,7 @@ class mobileButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             iconColor: iconCor,
             shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
+              borderRadius: BorderRadius.circular(2),
             ),
             backgroundColor: cor,
             textStyle:
