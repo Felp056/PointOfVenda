@@ -80,8 +80,8 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
             width: largura * .8,
             height: altura * .07,
             decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(4),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
@@ -106,18 +106,18 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
                       Text(
                         descricao,
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            backgroundColor: Colors.blueAccent),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: altura * .003),
                       Text(
                         'Qtd: $quantidade',
                         style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 12,
-                            backgroundColor: Colors.blueAccent),
+                          color: Colors.grey[700],
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -130,8 +130,8 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
                     Text(
                       'R\$ ${valorUnitario.toStringAsFixed(2)}',
                       style: TextStyle(
-                          color: Colors.grey[800],
-                          backgroundColor: Colors.blueAccent),
+                        color: Colors.grey[800],
+                      ),
                     ),
                     SizedBox(height: altura * .001),
                     Text(
@@ -139,7 +139,6 @@ class _WidgetItensVendaState extends State<WidgetItensVenda> {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
-                        backgroundColor: Colors.blueAccent,
                       ),
                     ),
                   ],

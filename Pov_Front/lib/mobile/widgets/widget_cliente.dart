@@ -1,48 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:pov_web/DataModels/cliente_model.dart';
 
 class WidgetCliente extends StatefulWidget {
-  WidgetCliente({super.key});
+  const WidgetCliente({
+    super.key,
+    required this.altura,
+    required this.largura,
+    required this.cliente,
+  });
 
+  final Cliente cliente;
+  final double altura;
+  final double largura;
   @override
   State<WidgetCliente> createState() => _WidgetClienteState();
 }
 
 class _WidgetClienteState extends State<WidgetCliente> {
+  final Color bgColor = Colors.white;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
+  editCliente() {}
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      color: Colors.amberAccent,
-      margin: const EdgeInsets.only(
-        top: 10,
-        left: 10,
-        right: 10,
+    return ListTile(
+      tileColor: bgColor,
+      title: Text(
+        widget.cliente.nome,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
-      padding: const EdgeInsets.all(5),
-      child: const Row(
-        //color: Color.fromRGBO(218, 210, 216, 1),
-        //child: Container(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Text("Cliente"),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Text("data"),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Text("test"),
-          ),
-        ],
+      subtitle: Text(
+        widget.cliente.documento,
+        style: TextStyle(
+          fontSize: 15,
+          color: Colors.grey[700],
+        ),
+      ),
+      leading: IconButton(
+        onPressed: editCliente,
+        icon: const Icon(Icons.person),
       ),
     );
   }
 }
+
+/*
+
+Container(
+      color: Colors.amberAccent,
+      padding: EdgeInsets.only(bottom: widget.largura * .05),
+      child: Row(
+        children: [
+          // Cliente
+          Padding(
+            padding: EdgeInsets.all(widget.largura * .1),
+            child: Text('Cliente: ${widget.cliente.nome}'),
+          ),
+          // Endereço
+          Padding(
+            padding: EdgeInsets.all(widget.largura * .1),
+            child: Text('Cliente: ${widget.cliente.endereco}'),
+          ),
+          // Documento
+          Padding(
+            padding: EdgeInsets.all(widget.largura * .1),
+            child: Text('Cliente: ${widget.cliente.documento}'),
+          ),
+        ],
+      ),
+    );
+
+*/

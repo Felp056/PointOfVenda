@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/mobile/widgets/button_mobile.dart';
+import 'package:pov_web/mobile/widgets/expandable_controller.dart';
 import 'package:pov_web/mobile/widgets/mobileAppBar.dart';
 import 'package:pov_web/mobile/widgets/venda_header.dart';
 import 'package:pov_web/mobile/widgets/venda_itens.dart';
 
 class VendaMobile extends StatefulWidget {
-  const VendaMobile({
+  VendaMobile({
     super.key,
   });
+
+  final ExpandableController controller = ExpandableController();
 
   @override
   State<VendaMobile> createState() => _VendaMobileState();
@@ -40,11 +43,13 @@ class _VendaMobileState extends State<VendaMobile> {
                   // Onde aparecem os dados da venda, Cliente, Forma de Pagamento e Tabela de preço
                   altura: altura,
                   largura: largura,
+                  controller: widget.controller,
                 ),
                 VendaItens(
                   // Onde aparecem os itens da Venda
                   altura: altura,
                   largura: largura,
+                  controller: widget.controller,
                 ),
                 Container(
                   // Botão de Fechar pedido
@@ -53,7 +58,7 @@ class _VendaMobileState extends State<VendaMobile> {
                     left: altura * .025,
                     right: altura * .025,
                   ),
-                  child: mobileButton(
+                  child: MobileButton(
                       buttonName: "Fechar Pedido",
                       buttonFunction: fecharPedido,
                       buttonWidth: largura,

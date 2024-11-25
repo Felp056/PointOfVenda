@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pov_web/mobile/widgets/button_mobile.dart';
+import 'package:pov_web/mobile/widgets/expandable_controller.dart';
 import 'package:pov_web/mobile/widgets/widget_itens_venda.dart';
 
 class VendaItens extends StatefulWidget {
@@ -7,33 +8,22 @@ class VendaItens extends StatefulWidget {
     super.key,
     required this.altura,
     required this.largura,
+    required this.controller,
   });
 
   final double altura;
   final double largura;
-  final Color bgColor = const Color.fromRGBO(218, 210, 216, 1);
+  final ExpandableController controller;
 
   @override
-  // ignore: no_logic_in_create_state
-  State<VendaItens> createState() => _VendaItensState(
-        altura,
-        largura,
-      );
-
-  get getAltura => altura;
-  get getLargura => largura;
+  State<VendaItens> createState() => _VendaItensState();
 }
 
 class _VendaItensState extends State<VendaItens> {
-  _VendaItensState(
-    this.altura,
-    this.largura,
-  );
+  _VendaItensState();
 
-  final double altura;
-  final double largura;
   final Color bgColor = const Color.fromRGBO(218, 210, 216, 1);
-  List<Widget> itens = [];
+  late List<Widget> itens;
 
   @override
   initState() {
@@ -42,26 +32,31 @@ class _VendaItensState extends State<VendaItens> {
       growable: true,
     );
 
+    // Título: Produtos
     itens.add(
       Padding(
-        padding: EdgeInsets.only(bottom: largura * .05),
+        padding: EdgeInsets.only(bottom: widget.largura * .05),
         child: const Center(
           child: Text(
             "Produtos",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
     );
 
+    // Botão para adicionar novo item
     itens.add(
       Padding(
-        padding: EdgeInsets.only(bottom: largura * .05),
-        child: mobileButton(
+        padding: EdgeInsets.only(bottom: widget.largura * .05),
+        child: MobileButton(
           buttonName: '',
           buttonFunction: addItem,
-          buttonWidth: largura * .8,
-          buttonHeight: altura * .07,
+          buttonWidth: widget.largura * .8,
+          buttonHeight: widget.altura * .07,
           icon: const Icon(Icons.add),
           cor: Colors.white,
           iconCor: Colors.black87,
@@ -75,11 +70,11 @@ class _VendaItensState extends State<VendaItens> {
       itens.add(
         Padding(
           // TODO: Implementar valores do Produto
-          padding: EdgeInsets.only(bottom: largura * .05),
+          padding: EdgeInsets.only(bottom: widget.largura * .05),
           child: Center(
             child: WidgetItensVenda(
-              altura: altura,
-              largura: largura,
+              altura: widget.altura,
+              largura: widget.largura,
               descricao: 'Teste',
               quantidade: 2,
               valorUnitario: 2.5,
@@ -92,30 +87,54 @@ class _VendaItensState extends State<VendaItens> {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints:
-          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * .6),
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          border: Border.all(
-            color: Colors.black54,
-          ),
-        ),
-        margin: EdgeInsets.only(
-          bottom: altura * .025,
-          left: altura * .025,
-          right: altura * .025,
-        ),
-        padding: EdgeInsets.all(largura * .05),
-        width: largura,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          children: itens,
-        ),
-      ),
+    return GestureDetector(
+      onTap: () => widget.controller.expand("itens"),
+      child: ValueListenableBuilder<String?>(
+          valueListenable: widget.controller,
+          builder: (context, expandedWidget, child) {
+            bool isExpanded = expandedWidget == "itens";
+
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 190),
+              constraints: BoxConstraints(
+                maxHeight: isExpanded
+                    ? MediaQuery.of(context).size.height * .6 // Expandido
+                    : widget.altura * .1, // Contraído
+              ),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(
+                  color: Colors.black54,
+                ),
+              ),
+              margin: EdgeInsets.only(
+                bottom: widget.altura * .025,
+                left: widget.altura * .025,
+                right: widget.altura * .025,
+              ),
+              padding: EdgeInsets.all(widget.largura * .05),
+              width: widget.largura,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Sempre exibe o primeiro item (título)
+                  itens.first,
+                  const SizedBox(height: 8),
+                  // Mostra o restante dos itens apenas se estiver expandido
+                  if (isExpanded)
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        children:
+                            itens.sublist(1), // Exclui o primeiro item (título)
+                      ),
+                    ),
+                ],
+              ),
+            );
+          }),
     );
   }
 }
